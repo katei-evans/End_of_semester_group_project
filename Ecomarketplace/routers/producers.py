@@ -1,28 +1,14 @@
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-from routers import producers, matching, recycling, analytics
+from fastapi import APIRouter, HTTPException
+from schemas import ProductCreate
 
-app = FastAPI(
-    title="EcoMarketplace API",
-    description="Centralized digital hub for green energy and circular economy products.",
-    version="1.0.0"
-)
+router = APIRouter()
 
-# Allow frontend applications (web/mobile) to connect to the backend
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],  # Adjust this to specific domains in production
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+@app.post("/inventory")
+async def add_product(product: ProductCreate):
+    # Logic to save the briquettes or solar products to the database goes here
+    return {"status": "success", "message": f"Product '{product.name}' added to inventory."}
 
-# Include feature-specific routers
-app.include_router(producers.router, prefix="/api/producers", tags=["Producer Dashboard"])
-app.include_router(matching.router, prefix="/api/matching", tags=["Geo-Location Matching"])
-app.include_router(recycling.router, prefix="/api/recycling", tags=["Recycling Marketplace"])
-app.include_router(analytics.router, prefix="/api/analytics", tags=["Analytics & Education"])
-
-@app.get("/")
-async def root():
-    return {"message": "Welcome to the EcoMarketplace SDG 7 API Platform"}
+@app.get("/sales-tracker/{producer_id}")
+async def get_sales(producer_id: int):
+    # Logic to fetch sales metrics for the dashboard
+    return {"producer_id": producer_id, "total_sales_kes": 15200.0, "units_sold": 45}

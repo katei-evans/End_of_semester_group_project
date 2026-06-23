@@ -11,7 +11,7 @@ app = FastAPI(
 # Allow frontend applications (web/mobile) to connect to the backend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Adjust this to specific domains in production
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
